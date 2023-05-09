@@ -7,44 +7,54 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => Model(),
+      create: (context) => ProveOne(),
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Providers"),
         ),
-        body: Consumer<Model>(builder: ((context, model, child) {
-          return Column(
-            children: [
-              Center(
-                child: Text(model.name),
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  model.changeName();
-                },
-                style: const ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(Colors.blue),
-                  foregroundColor: MaterialStatePropertyAll(Colors.white),
-                ),
-                child: const Text(
-                  "Do Something",
-                ),
-              ),
-            ],
-          );
-        })),
+        body: ListView(
+          children: [
+            Consumer<ProveOne>(builder: (context, proveone, child) {
+              print("Consumer text1");
+              return Text(proveone.showsomething1);
+            }),Consumer<ProveOne>(builder: (context, proveone, child) {
+              print("Consumer text2");
+
+              return Text(proveone.showsomething1);
+            }),
+            const SizedBox(
+              height: 10.0,
+            ),
+            Consumer<ProveOne>(
+              builder: (context, proveone, child) {
+                print("Consumer button");
+
+                return ElevatedButton(
+                  onPressed: () {
+                    proveone.dosomething();
+                  },
+                  style: const ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(Colors.blue),
+                    foregroundColor: MaterialStatePropertyAll(Colors.white),
+                  ),
+                  child: const Text(
+                    "Do Something",
+                  ),
+                );
+              },
+            )
+          ],
+        ),
       ),
     );
   }
 }
 
-class Model extends ChangeNotifier {
-  String name = "Welcome";
-  changeName() {
-    name = "Ahmed";
+class ProveOne extends ChangeNotifier {
+  String showsomething1 = "show something";
+  String showsomething2 = "show something";
+  dosomething() {
+    showsomething1 = "Yes Provider";
     notifyListeners();
   }
 }
